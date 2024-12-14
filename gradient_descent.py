@@ -2,16 +2,11 @@ from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 import pathlib
-import matplotlib
-import sys
 
+import matplotlib
 matplotlib.rcParams['mathtext.fontset'] = 'stix'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
 matplotlib.rcParams.update({'font.size': 18})
-
-quiet = False
-if len(sys.argv) > 1 and sys.argv[1] == 'quiet':
-    quiet = True
 
 # constants for columns in data.txt
 TV_COL=1;
@@ -64,26 +59,24 @@ def train(spendings, sales, w, b, alpha, epochs):
     for e in range(epochs):
         w, b = update_w_and_b(spendings, sales, w, b, alpha)
 
-        if not quiet:
-            # log the progress
-            if (e == 0) or (e < 3000 and e % 400 == 0) or (e % 3000 == 0):
-                print("epoch: ", str(e), "loss: "+str(loss(spendings, sales, w, b)))
-                print("w, b: ", w, b)
-                plt.figure(image_counter)
-                axes = plt.gca()
-                axes.set_xlim([0,50])
-                axes.set_ylim([0,30])
-                plt.scatter(spendings, sales)
-                X_plot = np.linspace(0,50,50)
-                plt.plot(X_plot, X_plot*w + b)
-                #plt.show()
-                fig1 = plt.gcf()
-                fig1.subplots_adjust(top = 0.98, bottom = 0.1, right = 0.98, left = 0.08, hspace = 0, wspace = 0)
-                fig1.savefig(output_dir / ('gradient_descent-' + str(image_counter) + '.eps'), format='eps', dpi=1000, bbox_inches = 'tight', pad_inches = 0)
-                fig1.savefig(output_dir / ('gradient_descent-' + str(image_counter) + '.pdf'), format='pdf', dpi=1000, bbox_inches = 'tight', pad_inches = 0)
-                fig1.savefig(output_dir / ('gradient_descent-' + str(image_counter) + '.png'), dpi=1000, bbox_inches = 'tight', pad_inches = 0)
-                image_counter += 1
-
+        # log the progress
+        if (e == 0) or (e < 3000 and e % 400 == 0) or (e % 3000 == 0):
+            print("epoch: ", str(e), "loss: "+str(loss(spendings, sales, w, b)))
+            print("w, b: ", w, b)
+            plt.figure(image_counter)
+            axes = plt.gca()
+            axes.set_xlim([0,50])
+            axes.set_ylim([0,30])
+            plt.scatter(spendings, sales)
+            X_plot = np.linspace(0,50,50)
+            plt.plot(X_plot, X_plot*w + b)
+            #plt.show()
+            fig1 = plt.gcf()
+            fig1.subplots_adjust(top = 0.98, bottom = 0.1, right = 0.98, left = 0.08, hspace = 0, wspace = 0)
+            fig1.savefig(output_dir / ('gradient_descent-' + str(image_counter) + '.eps'), format='eps', dpi=1000, bbox_inches = 'tight', pad_inches = 0)
+            fig1.savefig(output_dir / ('gradient_descent-' + str(image_counter) + '.pdf'), format='pdf', dpi=1000, bbox_inches = 'tight', pad_inches = 0)
+            fig1.savefig(output_dir / ('gradient_descent-' + str(image_counter) + '.png'), dpi=1000, bbox_inches = 'tight', pad_inches = 0)
+            image_counter += 1
     return w, b
 
 def loss(spendings, sales, w, b):
@@ -103,12 +96,10 @@ x, y = np.loadtxt(
 
 w, b = train(x, y, 0.0, 0.0, 0.001, 15000)
 
-if not quiet:
-    plot_original_data()
+plot_original_data()
 
 def predict(x, w, b):
     return w*x + b
-
 x_new = 23.0
 y_new = predict(x_new, w, b)
 print(y_new)
