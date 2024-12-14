@@ -15,7 +15,8 @@ PAPER_COL=3;
 SALES_COL=4
 
 # platform agnostic path to the output directory
-output_dir = pathlib.Path.cwd() / 'output'
+output_dir = pathlib.Path.cwd() / 'Illustrations'
+output_dir.mkdir(parents=True, exist_ok=True)
 
 def plot_original_data():
     x, y = np.loadtxt(
@@ -96,7 +97,6 @@ x, y = np.loadtxt(
 plot_original_data()
 
 w, b = train(x, y, 0.0, 0.0, 0.001, 15000)
-
 
 def predict(x, w, b):
     return w*x + b
