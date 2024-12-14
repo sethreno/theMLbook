@@ -94,9 +94,9 @@ x, y = np.loadtxt(
     unpack = True,
 )
 
-plot_original_data()
-
 w, b = train(x, y, 0.0, 0.0, 0.001, 15000)
+
+plot_original_data()
 
 def predict(x, w, b):
     return w*x + b
